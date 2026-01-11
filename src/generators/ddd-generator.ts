@@ -3,6 +3,7 @@ import prompts from 'prompts';
 import type { GeneratorConfig, GeneratorResult, GeneratedFile } from '../types/index.js';
 import { writeFiles, createDirectories, checkExistingFiles } from '../utils/file-system.js';
 import { logger } from '../utils/logger.js';
+import { autoInstallComponents, isShadcnInitialized, checkShadcnCli } from '../utils/shadcn-installer.js';
 import {
   generateEntity,
   generateRepositoryInterface,
@@ -24,6 +25,9 @@ export class DDDGenerator {
     const files: GeneratedFile[] = [];
     const cwd = process.cwd();
     const { moduleName, routePath } = this.config;
+
+    // Check and install shadcn components
+    await this.checkAndInstallComponents(cwd);
 
     // Define directory structure
     const moduleDir = path.join(cwd, 'modules', moduleName);
@@ -138,5 +142,34 @@ await writeFiles(files, true);
     }
 
     return instructions;
+  }
+
+  private async checkAndInstallComponents(cwd: string): Promise<void> {
+    if (!isShadcnInitialized(cwd)) {
+      logger.warning('shadcn/ui is not initialized in this project.');
+      logger.info('Please run: npx shadcn@latest init');
+      return;
+    }
+
+    if (!checkShadcnCli()) {
+      logger.warning('shadcn CLI not available. Skipping component auto-install.');
+      return;
+    }
+
+    console.log('');
+    logger.info('🔍 Checking shadcn components...');
+    const result = await autoInstallComponents(this.config, cwd);
+
+    if (result.installed.length > 0) {
+      console.log('');
+      logger.success(`✓ Installed ${result.installed.length} component(s): ${result.installed.join(', ')}`);
+    }
+
+    if (result.failed.length > 0) {
+      console.log('');
+      logger.error(`✗ Failed to install ${result.failed.length} component(s): ${result.failed.join(', ')}`);
+    }
+
+    console.log('');
   }
 }

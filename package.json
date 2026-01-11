@@ -1,6 +1,6 @@
 {
   "name": "shadcn-nextjs-page-generator",
-  "version": "1.0.4",
+  "version": "1.0.0",
   "description": "CLI tool to generate Next.js pages with shadcn/ui, Tailwind v4, and Framer Motion",
   "author": "Jatmiko",
   "license": "MIT",

@@ -139,7 +139,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { Calendar as CalendarIcon } from 'lucide-react';
 import { format } from 'date-fns';` : ''}
 import { Badge } from '@/components/ui/badge';
-${includeStats ? `import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';` : ''}
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   Search,
   Plus,

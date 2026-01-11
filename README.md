@@ -12,11 +12,13 @@
 ✨ **Interactive CLI** - User-friendly prompts guide you through the generation process
 🏗️ **Flexible Architecture** - Choose between DDD (Domain-Driven Design) or Simplified structure
 🎨 **shadcn/ui Components** - Beautiful, accessible components built with Radix UI
+� **Auto-Install** - Automatically detects and installs missing shadcn components
 💨 **Tailwind CSS v4** - Latest Tailwind with modern CSS-first syntax
 🎭 **Framer Motion** - Smooth animations with configurable intensity
 📊 **Complete CRUD** - Tables with search, filter, sort, pagination out of the box
 🔄 **Multiple Data Fetching** - Support for Mock data, TanStack Query, or standard fetch
 ⚡ **TypeScript First** - Full type safety and IntelliSense support
+♻️ **Smart Overwrite** - Regenerate files safely with automatic overwrite detection
 
 ## Quick Start
 
@@ -98,6 +100,20 @@ npx shadcn-nextjs-page-generator
 
 ### 3. Install Dependencies (if needed)
 
+The CLI automatically checks and installs missing shadcn/ui components! You'll see:
+
+```
+🔍 Checking shadcn components...
+  ✓ button already installed
+  ✓ table already installed
+  - card missing, installing...
+  - pagination missing, installing...
+
+✓ Installed 2 component(s): card, pagination
+```
+
+If you prefer to install manually or need additional dependencies:
+
 ```bash
 # If you selected TanStack Query
 npm install @tanstack/react-query
@@ -105,6 +121,8 @@ npm install @tanstack/react-query
 # If you enabled animations
 npm install framer-motion
 ```
+
+> **Note:** Auto-install requires shadcn/ui to be initialized in your project (`npx shadcn@latest init`)
 
 ### 4. Navigate to Your Page
 
@@ -301,8 +319,9 @@ const containerVariants = {
 
 ## shadcn/ui Components Used
 
-The generated code uses these shadcn/ui components:
+The generator automatically detects and installs the required shadcn/ui components based on your configuration:
 
+**Always installed:**
 - `button`
 - `table`
 - `card`
@@ -311,14 +330,27 @@ The generated code uses these shadcn/ui components:
 - `badge`
 - `pagination`
 - `dropdown-menu`
-- `popover`
-- `calendar` (if date filters)
-- `checkbox` (if row selection)
 
-Make sure to install them:
+**Conditionally installed:**
+- `popover` + `calendar` (if date filters enabled)
+- `checkbox` (if row selection enabled)
+
+### Auto-Install Feature
+
+The CLI automatically checks for missing components and installs them using:
 
 ```bash
-npx shadcn-ui@latest add button table card input select badge pagination dropdown-menu popover calendar checkbox
+npx shadcn@latest add <component> --yes --overwrite
+```
+
+This happens before generating your files, ensuring all required components are available.
+
+### Manual Installation
+
+If you prefer to install components manually:
+
+```bash
+npx shadcn@latest add button table card input select badge pagination dropdown-menu popover calendar checkbox
 ```
 
 ## FAQ

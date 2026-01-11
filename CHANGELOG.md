@@ -5,6 +5,35 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.6] - 2026-01-11
+
+### Added
+- 🔧 **Auto-Install Feature**: Automatically detects and installs missing shadcn/ui components
+  - Checks for missing components before generating files
+  - Uses `npx shadcn@latest add` to install components
+  - Shows installation progress and results
+  - Skips auto-install if shadcn is not initialized or CLI is unavailable
+- ♻️ **Smart Overwrite**: Always overwrites existing files when regenerating (removed confirmation prompt)
+- 📋 Comprehensive component detection based on configuration options
+
+### Fixed
+- 🐛 **Card Component Import**: Fixed conditional Card import in DDD template
+  - Card component is now always imported (used in main table wrapper, not just stats)
+  - Ensures Card components are always detected and installed
+  - Fixed issue where Card import was conditional on `includeStats` but used elsewhere
+
+### Changed
+- Enhanced user experience with automatic component management
+- Improved generator workflow with pre-flight component checks
+- Updated README with auto-install documentation
+
+## [1.0.5] - 2026-01-11
+
+### Changed
+- 📝 Enhanced README with more comprehensive documentation
+- Added detailed architecture comparisons
+- Improved setup instructions
+
 ## [1.0.4] - 2026-01-11
 
 ### Fixed
