@@ -1,8 +1,8 @@
 {
-  "name": "shadcn-page-gen",
+  "name": "@jatmiko/shadcn-page-gen",
   "version": "1.0.0",
   "description": "CLI tool to generate Next.js pages with shadcn/ui, Tailwind v4, and Framer Motion",
-  "author": "SALT Solutions",
+  "author": "Jatmiko",
   "license": "MIT",
   "type": "module",
   "keywords": [
