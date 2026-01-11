@@ -43,14 +43,13 @@ import { motion } from 'framer-motion';
 export default function Template({ children }: { children: React.ReactNode }) {
   return (
     <motion.div
-      initial=${animConfig.initial}
-      animate=${animConfig.animate}
+      initial={${animConfig.initial}}
+      animate={${animConfig.animate}}
       exit={{ opacity: 0, y: -20 }}
-      transition=${animConfig.transition}
+      transition={${animConfig.transition}}
     >
       {children}
     </motion.div>
   );
 }
-`;
-}
+`; }

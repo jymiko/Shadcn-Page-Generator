@@ -86,33 +86,25 @@ export class DDDGenerator {
       });
     }
 
-    // Check for existing files
-    const filePaths = files.map(f => f.path);
-    const existingFiles = await checkExistingFiles(filePaths);
+// Check for existing files
+const filePaths = files.map(f => f.path);
+const existingFiles = await checkExistingFiles(filePaths);
 
-    if (existingFiles.length > 0) {
-      console.log('');
-      logger.warning(`Found ${existingFiles.length} existing file(s):`);
-      existingFiles.forEach(file => {
-        const relativePath = path.relative(cwd, file);
-        logger.dim(`  - ${relativePath}`);
-      });
-      console.log('');
+if (existingFiles.length > 0) {
+  console.log('');
+  logger.warning(`Found ${existingFiles.length} existing file(s):`);
+  existingFiles.forEach(file => {
+    const relativePath = path.relative(cwd, file);
+    logger.dim(`  - ${relativePath}`);
+  });
+  console.log('');
 
-      const { shouldOverwrite } = await prompts({
-        type: 'confirm',
-        name: 'shouldOverwrite',
-        message: 'Do you want to overwrite these files?',
-        initial: true
-      });
+  // Always overwrite when regenerating
+  logger.info('Overwriting existing files...');
+}
 
-      if (!shouldOverwrite) {
-        throw new Error('Generation cancelled - files already exist');
-      }
-    }
-
-    // Write all files
-    await writeFiles(files);
+// Write all files
+await writeFiles(files, true);
 
     // Generate instructions
     const instructions = this.generateInstructions();
