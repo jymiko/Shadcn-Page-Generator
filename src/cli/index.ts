@@ -72,3 +72,6 @@ export async function run(): Promise<void> {
     process.exit(1);
   }
 }
+
+// Auto-execute when run as CLI
+run();

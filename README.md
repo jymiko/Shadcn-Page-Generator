@@ -1,9 +1,11 @@
-# shadcn-page-gen
+# shadcn-nextjs-page-generator
 
 > CLI tool to generate production-ready Next.js pages with shadcn/ui, Tailwind CSS v4, and Framer Motion animations.
 
-[![npm version](https://img.shields.io/npm/v/shadcn-page-gen.svg)](https://www.npmjs.com/package/shadcn-page-gen)
+[![npm version](https://img.shields.io/npm/v/shadcn-nextjs-page-generator.svg)](https://www.npmjs.com/package/shadcn-nextjs-page-generator)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue.svg)](https://www.typescriptlang.org/)
+[![Next.js](https://img.shields.io/badge/Next.js-14+-black.svg)](https://nextjs.org/)
 
 ## Features
 
@@ -20,10 +22,10 @@
 
 ```bash
 # Run with npx (no installation required)
-npx shadcn-page-gen
+npx shadcn-nextjs-page-generator
 
 # Or install globally
-npm install -g shadcn-page-gen
+npm install -g shadcn-nextjs-page-generator
 shadcn-page-gen
 ```
 
@@ -73,7 +75,7 @@ app/(dashboard)/your-route/
 ### 1. Run the CLI
 
 ```bash
-npx shadcn-page-gen
+npx shadcn-nextjs-page-generator
 ```
 
 ### 2. Answer Interactive Prompts
@@ -204,7 +206,7 @@ transition: { duration: 0.4 }
 ### Generate User Management Page
 
 ```bash
-npx shadcn-page-gen
+npx shadcn-nextjs-page-generator
 ```
 
 **Configuration:**
@@ -220,7 +222,7 @@ npx shadcn-page-gen
 ### Generate Simple Product List
 
 ```bash
-npx shadcn-page-gen
+npx shadcn-nextjs-page-generator
 ```
 
 **Configuration:**

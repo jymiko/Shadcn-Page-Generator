@@ -15,11 +15,13 @@ export async function ensureDir(dirPath: string): Promise<void> {
 
 /**
  * Writes content to a file, creating parent directories if needed
+ * Overwrites existing files if shouldOverwrite is true
  */
-export async function writeFile(filePath: string, content: string): Promise<void> {
+export async function writeFile(filePath: string, content: string, shouldOverwrite: boolean = true): Promise<void> {
   const dir = path.dirname(filePath);
   await ensureDir(dir);
-  await fs.writeFile(filePath, content, 'utf-8');
+  const writeOptions = shouldOverwrite ? { encoding: 'utf-8', flag: 'w' } : { encoding: 'utf-8', flag: 'wx' };
+  await fs.writeFile(filePath, content, writeOptions as fs.WriteFileOptions);
 }
 
 /**
@@ -72,9 +74,27 @@ export async function createDirectories(dirs: string[]): Promise<void> {
 /**
  * Writes multiple files at once
  */
-export async function writeFiles(files: Array<{ path: string; content: string }>): Promise<void> {
+export async function writeFiles(files: Array<{ path: string; content: string }>, shouldOverwrite: boolean = true): Promise<void> {
   for (const file of files) {
-    await writeFile(file.path, file.content);
-    logger.dim(`  Created: ${file.path}`);
+    const fileExists = await exists(file.path);
+    await writeFile(file.path, file.content, shouldOverwrite);
+    if (fileExists) {
+      logger.dim(`  Updated: ${file.path}`);
+    } else {
+      logger.dim(`  Created: ${file.path}`);
+    }
   }
+}
+
+/**
+ * Checks which files already exist from a list of file paths
+ */
+export async function checkExistingFiles(filePaths: string[]): Promise<string[]> {
+  const existingFiles: string[] = [];
+  for (const filePath of filePaths) {
+    if (await exists(filePath)) {
+      existingFiles.push(filePath);
+    }
+  }
+  return existingFiles;
 }

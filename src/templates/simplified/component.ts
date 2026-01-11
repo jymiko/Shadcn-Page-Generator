@@ -114,7 +114,7 @@ ${fetchFunction}`;
   // Similar structure to DDD component but without repository imports
   const imports = `'use client';
 
-${hasAnimations ? `import { motion } from 'framer-motion';` : ''}
+${hasAnimations ? `import { motion, type Variants } from 'framer-motion';` : ''}
 import { useEffect, useState } from 'react';
 ${isTanStack ? `import { useQuery } from '@tanstack/react-query';` : ''}
 import { Button } from '@/components/ui/button';
@@ -170,10 +170,10 @@ import {
 } from "@/components/ui/dropdown-menu";
 ${includeRowSelection ? `import { Checkbox } from "@/components/ui/checkbox";` : ''}`;
 
-  // Animation variants
+  // Animation variants and components
   const animationVariants = hasAnimations ? `
 // Framer Motion animation variants
-const containerVariants = {
+const containerVariants: Variants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
@@ -183,7 +183,7 @@ const containerVariants = {
   }
 };
 
-const itemVariants = {
+const itemVariants: Variants = {
   hidden: { opacity: 0, x: -20 },
   visible: {
     opacity: 1,
@@ -191,6 +191,10 @@ const itemVariants = {
     transition: { duration: ${animations.intensity === 'bold' ? '0.3' : animations.intensity === 'subtle' ? '0.15' : '0.2'} }
   }
 };
+${animations.listAnimations ? `
+// Create motion-wrapped TableRow component
+const MotionTableRow = motion(TableRow);
+` : ''}
 ` : '';
 
   // Row selection
@@ -456,7 +460,7 @@ ${tableHeaders}
               ) : (
                 ${animations.listAnimations ? `
                 data.map((item, index) => (
-                  <motion.tr
+                  <MotionTableRow
                     key={item.id}
                     variants={itemVariants}
                     initial="hidden"
@@ -493,7 +497,7 @@ ${tableCells}
                         </DropdownMenu>
                       </div>
                     </TableCell>
-                  ${animations.listAnimations ? `</motion.tr>` : `</TableRow>`}
+                  ${animations.listAnimations ? `</MotionTableRow>` : `</TableRow>`}
                 ))
               )}
             </TableBody>

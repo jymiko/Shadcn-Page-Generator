@@ -25,7 +25,7 @@ export function generateComponent(config: GeneratorConfig): string {
   // Generate imports based on features
   const imports = `'use client';
 
-${hasAnimations ? `import { motion } from 'framer-motion';` : ''}
+${hasAnimations ? `import { motion, type Variants } from 'framer-motion';` : ''}
 import { useEffect, useState } from 'react';
 import { ${entityName} } from '../../domain/entities/${moduleName}.entity';
 import { Get${entityName}sUseCase } from '../../application/use-cases/get-${moduleName}s.use-case';
@@ -84,10 +84,10 @@ import {
 } from "@/components/ui/dropdown-menu";
 ${includeRowSelection ? `import { Checkbox } from "@/components/ui/checkbox";` : ''}`;
 
-  // Generate animation variants if needed
+  // Generate animation variants and components if needed
   const animationVariants = hasAnimations ? `
 // Framer Motion animation variants
-const containerVariants = {
+const containerVariants: Variants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
@@ -97,7 +97,7 @@ const containerVariants = {
   }
 };
 
-const itemVariants = {
+const itemVariants: Variants = {
   hidden: { opacity: 0, x: -20 },
   visible: {
     opacity: 1,
@@ -105,6 +105,10 @@ const itemVariants = {
     transition: { duration: ${animations.intensity === 'bold' ? '0.3' : animations.intensity === 'subtle' ? '0.15' : '0.2'} }
   }
 };
+${animations.listAnimations ? `
+// Create motion-wrapped TableRow component
+const MotionTableRow = motion(TableRow);
+` : ''}
 ` : '';
 
   // Generate data fetching code
@@ -421,7 +425,7 @@ ${tableHeaders}
               ) : (
                 ${animations.listAnimations ? `
                 data.map((item, index) => (
-                  <motion.tr
+                  <MotionTableRow
                     key={item.id}
                     variants={itemVariants}
                     initial="hidden"
@@ -458,7 +462,7 @@ ${tableCells}
                         </DropdownMenu>
                       </div>
                     </TableCell>
-                  ${animations.listAnimations ? `</motion.tr>` : `</TableRow>`}
+                  ${animations.listAnimations ? `</MotionTableRow>` : `</TableRow>`}
                 ))
               )}
             </TableBody>

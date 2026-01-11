@@ -1,6 +1,8 @@
 import path from 'path';
+import prompts from 'prompts';
 import type { GeneratorConfig, GeneratorResult, GeneratedFile } from '../types/index.js';
-import { writeFiles, createDirectories } from '../utils/file-system.js';
+import { writeFiles, createDirectories, checkExistingFiles } from '../utils/file-system.js';
+import { logger } from '../utils/logger.js';
 import {
   generateEntity,
   generateRepositoryInterface,
@@ -82,6 +84,31 @@ export class DDDGenerator {
         path: path.join(appDir, 'template.tsx'),
         content: generateTemplate(this.config)
       });
+    }
+
+    // Check for existing files
+    const filePaths = files.map(f => f.path);
+    const existingFiles = await checkExistingFiles(filePaths);
+
+    if (existingFiles.length > 0) {
+      console.log('');
+      logger.warning(`Found ${existingFiles.length} existing file(s):`);
+      existingFiles.forEach(file => {
+        const relativePath = path.relative(cwd, file);
+        logger.dim(`  - ${relativePath}`);
+      });
+      console.log('');
+
+      const { shouldOverwrite } = await prompts({
+        type: 'confirm',
+        name: 'shouldOverwrite',
+        message: 'Do you want to overwrite these files?',
+        initial: true
+      });
+
+      if (!shouldOverwrite) {
+        throw new Error('Generation cancelled - files already exist');
+      }
     }
 
     // Write all files

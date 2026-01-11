@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import('../dist/cli/index.js')
+import('../dist/index.js')
   .then(({ run }) => run())
   .catch((err) => {
     console.error(err);
